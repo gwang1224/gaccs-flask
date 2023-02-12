@@ -8,6 +8,7 @@ from __init__ import app  # Definitions initialization
 from model.jokes import initJokes
 from model.users import initUsers
 from model.scores import initScores
+from model.symptoms import initSymptoms
 
 
 # setup APIs
@@ -15,6 +16,7 @@ from api.covid import covid_api # Blueprint import api definition
 from api.joke import joke_api # Blueprint import api definition
 from api.user import user_api # Blueprint import api definition
 from api.score import score_api
+from api.symptom import symptom_api
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -25,6 +27,7 @@ app.register_blueprint(covid_api) # register api routes
 app.register_blueprint(user_api) # register api routes
 app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(score_api)
+app.register_blueprint(symptom_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
