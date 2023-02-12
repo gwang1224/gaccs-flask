@@ -54,6 +54,7 @@ def activate_job():
     initUsers()
     initPeriods()
     initComments()
+    initScores()
 
 # this runs the application on the development server
 if __name__ == "__main__":
