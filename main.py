@@ -10,6 +10,7 @@ from model.users import initUsers
 from model.scores import initScores
 from model.symptoms import initSymptoms
 from model.periods import initPeriods
+from model.comments import initComments
 
 
 # setup APIs
@@ -19,6 +20,7 @@ from api.user import user_api # Blueprint import api definition
 from api.score import score_api
 from api.symptom import symptom_api
 from api.period import period_api
+from api.comment import comment1_api
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -31,6 +33,7 @@ app.register_blueprint(app_projects) # register app pages
 app.register_blueprint(score_api)
 app.register_blueprint(symptom_api)
 app.register_blueprint(period_api)
+app.register_blueprint(comment1_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
