@@ -5,7 +5,7 @@ from flask_restful import Api, Resource # used for REST API building
 # from model.users import User
 from model.comments import Comment1
 
-ovulation_api = Blueprint('comment1_api', __name__,
+comment1_api = Blueprint('comment1_api', __name__,
                    url_prefix='/api/comment1')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
