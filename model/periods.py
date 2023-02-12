@@ -20,8 +20,10 @@ class Period(db.Model):
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
-    _comment = db.Column(db.String(255), unique=False, nullable=False)
-    _symptom = db.Column(db.String(255), unique=True, nullable=False)
+    _periodlength = db.Column(db.String(255), unique=False, nullable=False)
+    _cyclelength = db.Column(db.String(255), unique=True, nullable=False)
+    _nextperiod = db.Column(db.String(255), unique=True, nullable=False)
+    _nextovulation = db.Column(db.String(255), unique=True, nullable=False)
 
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # posts = db.relationship("Post", cascade='all, delete', backref='scores', lazy=True)
@@ -71,10 +73,6 @@ class Period(db.Model):
     @nextovulation.setter
     def nextovulation(self, nextovulation):
         self._nextovulation = nextovulation
-        
-    # check if uid parameter matches user id in object, return boolean
-    def is_nextperiod(self, nextperiod):
-        return self._nextperiod == nextperiod
     
     @property
     # output content using str(object) in human readable form, uses getter
@@ -138,10 +136,10 @@ def initPeriods():
         db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = Period(periodlength='5', cyclelength='30', nextperiod='February 23rd')
-        u2 = Period(periodlength='4', cyclelength='25', nextperiod='February 28th')
-        u3 = Period(periodlength='7', cyclelength='40', nextperiod='February 21st')
-        u4 = Period(periodlength='4', cyclelength='21', nextperiod='February 19th ')
+        u1 = Period(periodlength='5', cyclelength='30', nextperiod='February 23rd', nextovulation='February 10th')
+        u2 = Period(periodlength='4', cyclelength='25', nextperiod='February 28th', nextovulation='February 15th')
+        u3 = Period(periodlength='7', cyclelength='40', nextperiod='February 21st', nextovulation='February 9th')
+        u4 = Period(periodlength='4', cyclelength='21', nextperiod='February 19th ', nextovulation='February 6th')
 
         users = [u1, u2, u3, u4]
 
