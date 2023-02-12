@@ -105,16 +105,16 @@ class Symptom(db.Model):
 
 
 # Builds working data for testing
-def initScores():
+def initSymptoms():
     with app.app_context():
         """Create database and tables"""
         db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = Score(comment='melatonin', symptom='trouble sleeping')
-        u2 = Score(comment='accutane', symptom='acne')
-        u3 = Score(comment='taking a bath', symptom='abdominal cramps')
-        u4 = Score(comment='sleeping more', symptom='muscle aches')
+        u1 = Symptom(comment='melatonin', symptom='trouble sleeping')
+        u2 = Symptom(comment='accutane', symptom='acne')
+        u3 = Symptom(comment='taking a bath', symptom='abdominal cramps')
+        u4 = Symptom(comment='sleeping more', symptom='muscle aches')
 
         users = [u1, u2, u3, u4]
 

@@ -3,7 +3,7 @@ from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 
 # from model.users import User
-from model.symptom import Symptom
+from model.symptoms import Symptom
 
 symptom_api = Blueprint('symptom_api', __name__,
                    url_prefix='/api/symptom')
