@@ -86,9 +86,9 @@ class Symptom(db.Model):
     # returns self
     def update(self, comment="", symptom=""):
         """only updates values with length"""
-        if len(name) > 0:
+        if len(comment) > 0:
             self.comment = comment
-        if len(uid) > 0:
+        if len(symptom) > 0:
             self.symptom = symptom
         db.session.commit()
         return self

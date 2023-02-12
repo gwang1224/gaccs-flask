@@ -3,9 +3,9 @@ from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 
 # from model.users import User
-from model.scores import Symptom
+from model.symptom import Symptom
 
-score_api = Blueprint('symptom_api', __name__,
+symptom_api = Blueprint('symptom_api', __name__,
                    url_prefix='/api/symptom')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
@@ -43,7 +43,7 @@ class SymptomAPI:
 
     class _Read(Resource):
         def get(self):
-            users = Score.query.all()    # read/extract all users from database
+            users = Symptom.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
     
