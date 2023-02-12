@@ -1,42 +1,133 @@
-from sqlalchemy import Column, Integer, String
-from .. import db
+""" database dependencies to support sqliteDB examples """
+from random import randrange
+import os, base64
+import json
+
+from __init__ import app, db
+from sqlalchemy.exc import IntegrityError
 
 
+''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
+
+
+# Define the User class to manage actions in the 'users' table
+# -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
+# -- a.) db.Model is like an inner layer of the onion in ORM
+# -- b.) User represents data we want to store, something that is built on db.Model
+# -- c.) SQLAlchemy ORM is layer on top of SQLAlchemy Core, then SQLAlchemy engine, SQL
 class Symptom(db.Model):
-    # defining table
-    __tablename__ = "symptom"
-    id = Column(Integer, primary_key=True)
-    _comment = Column(String(255), nullable=False)
-    _symptom = Column(Integer, nullable=False)
+    __tablename__ = 'symptoms'  # table name is plural, class name is singular
 
-    # initialization
+    # Define the User schema with "vars" from object
+    id = db.Column(db.Integer, primary_key=True)
+    _comment = db.Column(db.String(255), unique=False, nullable=False)
+    _symptom = db.Column(db.String(255), unique=True, nullable=False)
+
+    # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
+    # posts = db.relationship("Post", cascade='all, delete', backref='scores', lazy=True)
+
+    # constructor of a User object, initializes the instance variables within object (self)
     def __init__(self, comment, symptom):
-        self._comment = comment
+        self._comment = comment    # variables with self prefix become part of the object, 
         self._symptom = symptom
 
+    # a name getter method, extracts name from object
     @property
     def comment(self):
         return self._comment
-
-    @period.setter
-    def text(self, comment):
-        self._text = comment
-
+    
+    # a setter function, allows name to be updated after initial object creation
+    @comment.setter
+    def comment(self, comment):
+        self._comment = comment
+    
+    # a getter method, extracts email from object
     @property
     def symptom(self):
         return self._symptom
+    
+    # a setter function, allows name to be updated after initial object creation
+    @symptom.setter
+    def symptom(self, symptom):
+        self._symptom = symptom
+        
+    # check if uid parameter matches user id in object, return boolean
+    def is_symptom(self, symptom):
+        return self._symptom == symptom
+    
+    @property
+    # output content using str(object) in human readable form, uses getter
+    # output content using json dumps, this is ready for API response
+    def __str__(self):
+        return json.dumps(self.read())
 
-    @period.setter
-    def text(self, symptom):
-        self._text = symptom
+    # CRUD create/add a new record to the table
+    # returns self or None on error
+    def create(self):
+        try:
+            # creates a person object from User(db.Model) class, passes initializers
+            db.session.add(self)  # add prepares to persist person object to Users table
+            db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
+            return self
+        except IntegrityError:
+            db.session.remove()
+            return None
 
-    def to_dict(self):
-        return {"id": self.id, "comment": self.comment, "symptom": self.symptom}
+    # CRUD read converts self to dictionary
+    # returns dictionary
+    def read(self):
+        return {
+            "id": self.id,
+            "comment": self.comment,
+            "symptom": self.symptom
+        }
 
-def init_schedules():
-    task1 = Symptom(comment="Melatonin", symptom=1)
-    task2 = Symptom(comment="Accutane", symptom=2)
-    db.session.add(task1)
-    db.session.add(task2)
+    # CRUD update: updates user name, password, phone
+    # returns self
+    def update(self, comment="", symptom=""):
+        """only updates values with length"""
+        if len(name) > 0:
+            self.comment = comment
+        if len(uid) > 0:
+            self.symptom = symptom
+        db.session.commit()
+        return self
 
-    db.session.commit()
+    # CRUD delete: remove self
+    # None
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return None
+
+
+"""Database Creation and Testing """
+
+
+# Builds working data for testing
+def initScores():
+    with app.app_context():
+        """Create database and tables"""
+        db.init_app(app)
+        db.create_all()
+        """Tester data for table"""
+        u1 = Score(comment='melatonin', symptom='trouble sleeping')
+        u2 = Score(comment='accutane', symptom='acne')
+        u3 = Score(comment='taking a bath', symptom='abdominal cramps')
+        u4 = Score(comment='sleeping more', symptom='muscle aches')
+
+        users = [u1, u2, u3, u4]
+
+        """Builds sample user/note(s) data"""
+        for user in users:
+            try:
+                '''add a few 1 to 4 notes per user'''
+                for num in range(randrange(1, 4)):
+                    note = "#### " + user.comment + " note " + str(num) + ". \n Generated by test data."
+                '''add user/post data to table'''
+                user.create()
+            except IntegrityError:
+                '''fails with bad or duplicate data'''
+                db.session.remove()
+                print(f"Records exist, duplicate email, or error: {user.symptom}")
+            

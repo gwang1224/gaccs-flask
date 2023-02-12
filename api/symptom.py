@@ -1,75 +1,56 @@
-from flask import Blueprint, request
-from flask_restful import Api, Resource, reqparse
-from .. import db
-from ..model.symptoms import Symptom
+import json
+from flask import Blueprint, request, jsonify
+from flask_restful import Api, Resource # used for REST API building
 
-symptom_bp = Blueprint("symptom", __name__)
-symptom_api = Api(symptom_bp)
+# from model.users import User
+from model.scores import Symptom
 
+score_api = Blueprint('symptom_api', __name__,
+                   url_prefix='/api/symptom')
 
-class SymptomAPI(Resource):
-    def get(self):
-        id = request.args.get("id")
-        symptom = db.session.query(Symptom).get(id)
-        if symptom:
-            return symptom.to_dict()
-        return {"message": "symptom not found"}, 404
+# API docs https://flask-restful.readthedocs.io/en/latest/api.html
+api = Api(symptom_api)
 
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("comment", required=True, type=str)
-        parser.add_argument("symptom", required=False, type=int)
-        
-        args = parser.parse_args()
+class SymptomAPI:        
+    class _Create(Resource):
+        def post(self):
+            ''' Read data for json body '''
+            body = request.get_json()
+            
+            ''' Avoid garbage in, error checking '''
+            # validate name
+            comment = body.get('comment')
+            if comment is None or len(comment) < 2:
+                return {'message': f'Comment is missing, or is less than 2 characters'}, 400
+            # validate symptom
+            symptom = body.get('symptom')
+            if symptom is None or len(symptom) < 2:
+                return {'message': f'Symptom is missing, or is less than 2 characters'}, 400
 
-        symptom = Symptom(args["comment"], args["symptoms"])
-        try:
-            db.session.add(symptom)
-            db.session.commit()
-            return symptom.to_dict(), 201
-        except Exception as e:
-            db.session.rollback()
-            return {"message": f"server error: {e}"}, 500
+            ''' #1: Key code block, setup USER OBJECT '''
+            uo = Symptom(comment=comment, 
+                      symptom=symptom)
+            
+            
+            ''' #2: Key Code block to add user to database '''
+            # create user in database
+            user = uo.create()
+            # success returns json of user
+            if user:
+                return jsonify(user.read())
+            # failure returns error
+            return {'message': f'Processed {comment}, either a format error or {symptom} is duplicate'}, 400
 
-    def put(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("id", required=True, type=int)
-        args = parser.parse_args()
+    class _Read(Resource):
+        def get(self):
+            users = Score.query.all()    # read/extract all users from database
+            json_ready = [user.read() for user in users]  # prepare output in json
+            return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+    
 
-        try:
-            symptom = db.session.query(Symptom).get(args["id"])
-            if symptom:
-                symptom.started = False
-                db.session.commit()
-            else:
-                return {"message": "symptom not found"}, 404
-        except Exception as e:
-            db.session.rollback()
-            return {"message": f"server error: {e}"}, 500
+            
 
-    def delete(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument("id", required=True, type=int)
-        args = parser.parse_args()
-
-        try:
-            symptom = db.session.query(Symptom).get(args["id"])
-            if symptom:
-                db.session.delete(symptom)
-                db.session.commit()
-                return symptom.to_dict()
-            else:
-                return {"message": "symptom not found"}, 404
-        except Exception as e:
-            db.session.rollback()
-            return {"message": f"server error: {e}"}, 500
-
-
-class SymptomListAPI(Resource):
-    def get(self):
-        symptoms = db.session.query(Symptom).all()
-        return [symptom.to_dict() for symptom in symptoms]
-
-
-symptom_api.add_resource(SymptomAPI, "/symptom")
-symptom_api.add_resource(SymptomListAPI, "/symptomList")
+    # building RESTapi endpoint
+    api.add_resource(_Create, '/create')
+    api.add_resource(_Read, '/')
+    
