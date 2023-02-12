@@ -91,11 +91,11 @@ def initComments():
         db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = Comment1(comment='hi')
-        u2 = Comment1(comment='great website')
-        u3 = Comment1(comment='so informational')
-        u4 = Comment1(comment='i like the resources given')
-        u5 = Comment1(comment='nice design')
+        u1 = Comment1(comment1='hi')
+        u2 = Comment1(comment1='great website')
+        u3 = Comment1(comment1='so informational')
+        u4 = Comment1(comment1='i like the resources given')
+        u5 = Comment1(comment1='nice design')
 
         users = [u1, u2, u3, u4, u5]
 
