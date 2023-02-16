@@ -1,8 +1,8 @@
 import threading
 
 # import "packages" from flask
-from flask import render_template  # import render_template from "public" flask libraries
-
+from flask import render_template, Flask, jsonify, request  # import render_template from "public" flask libraries
+import sqlite3
 # import "packages" from "this" project
 from __init__ import app  # Definitions initialization
 from model.jokes import initJokes
@@ -35,6 +35,14 @@ app.register_blueprint(symptom_api)
 app.register_blueprint(period_api)
 app.register_blueprint(comment1_api)
 
+def db_connection():
+    conn = None
+    try: 
+        conn = sqlite3.connect('periods.sqlite')
+    except sqlite3.error as e: 
+        print(e)
+    return conn 
+
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
     # note that we set the 404 status explicitly
@@ -47,6 +55,18 @@ def index():
 @app.route('/stub/')  # connects /stub/ URL to stub() function
 def stub():
     return render_template("stub.html")
+
+#@app.route('/nextovulation', methods = ["GET"])
+#def nextov():
+  #  if request.method == "GET":
+   #     conn = db_connection()
+   #     cursor = conn.cursor("SELECT * FROM sqlite.db")
+   #     result = cursor.fetchall()
+   #     if result is not None:
+    #        return result.jsonify()
+    #    else: 
+    #        return "Something wrong", 404
+
 
 @app.before_first_request
 def activate_job():

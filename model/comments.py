@@ -88,7 +88,7 @@ class Comment1(db.Model):
 def initComments():
     with app.app_context():
         """Create database and tables"""
-        db.init_app(app)
+        #db.init_app(app)
         db.create_all()
         """Tester data for table"""
         u1 = Comment1(comment1='hi')
