@@ -133,7 +133,7 @@ class Period(db.Model):
 def initPeriods():
     with app.app_context():
         """Create database and tables"""
-        db.init_app(app)
+        #db.init_app(app)
         db.create_all()
         """Tester data for table"""
         u1 = Period(periodlength='5', cyclelength='30', nextperiod='2/23/23', nextovulation='February 10th')
