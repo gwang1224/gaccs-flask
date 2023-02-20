@@ -7,24 +7,14 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 
 
-''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
-
-
-# Define the User class to manage actions in the 'users' table
-# -- Object Relational Mapping (ORM) is the key concept of SQLAlchemy
-# -- a.) db.Model is like an inner layer of the onion in ORM
-# -- b.) User represents data we want to store, something that is built on db.Model
-# -- c.) SQLAlchemy ORM is layer on top of SQLAlchemy Core, then SQLAlchemy engine, SQL
+# Define the Score class to manage actions in the 'score' table
 class Score(db.Model):
-    __tablename__ = 'scores'  # table name is plural, class name is singular
+    __tablename__ = 'scores' 
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
     _name = db.Column(db.String(255), unique=False, nullable=False)
     _uid = db.Column(db.String(255), unique=False, nullable=False)
-
-    # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
-    # posts = db.relationship("Post", cascade='all, delete', backref='scores', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
     def __init__(self, name, uid):
@@ -41,31 +31,24 @@ class Score(db.Model):
     def name(self, name):
         self._name = name
     
-    # a getter method, extracts email from object
     @property
     def uid(self):
         return self._uid
     
-    # a setter function, allows name to be updated after initial object creation
     @uid.setter
     def uid(self, uid):
         self._uid = uid
         
-    # check if uid parameter matches user id in object, return boolean
     def is_uid(self, uid):
         return self._uid == uid
     
     @property
-    # output content using str(object) in human readable form, uses getter
-    # output content using json dumps, this is ready for API response
     def __str__(self):
         return json.dumps(self.read())
 
-    # CRUD create/add a new record to the table
-    # returns self or None on error
     def create(self):
         try:
-            # creates a person object from User(db.Model) class, passes initializers
+            # creates a person object from Score(db.Model) class, passes initializers
             db.session.add(self)  # add prepares to persist person object to Users table
             db.session.commit()  # SqlAlchemy "unit of work pattern" requires a manual commit
             return self
@@ -103,8 +86,6 @@ class Score(db.Model):
 
 """Database Creation and Testing """
 
-
-# Builds working data for testing
 def initScores():
     with app.app_context():
         """Create database and tables"""
