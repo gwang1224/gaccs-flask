@@ -9,17 +9,17 @@ from sqlalchemy.exc import IntegrityError
 
 # Define the Score class to manage actions in the 'score' table
 class Score(db.Model):
-    __tablename__ = 'scores' 
+    __tablename__ = 'scores1' 
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
     _name = db.Column(db.String(255), unique=False, nullable=False)
-    _uid = db.Column(db.String(255), unique=False, nullable=False)
+    _score = db.Column(db.String(255), unique=False, nullable=False)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid):
+    def __init__(self, name, score):
         self._name = name    # variables with self prefix become part of the object, 
-        self._uid = uid
+        self._score = score
 
     # a name getter method, extracts name from object
     @property
@@ -32,15 +32,15 @@ class Score(db.Model):
         self._name = name
     
     @property
-    def uid(self):
-        return self._uid
+    def score(self):
+        return self._score
     
-    @uid.setter
-    def uid(self, uid):
-        self._uid = uid
+    @score.setter
+    def score(self, score):
+        self._score = score
         
-    def is_uid(self, uid):
-        return self._uid == uid
+    def is_score(self, score):
+        return self._score == score
     
     @property
     def __str__(self):
@@ -62,17 +62,17 @@ class Score(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "uid": self.uid
+            "score": self.score
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid=""):
+    def update(self, name="", score=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
-        if len(uid) > 0:
-            self.uid = uid
+        if len(score) > 0:
+            self.score = score
         db.session.commit()
         return self
 
@@ -89,14 +89,14 @@ class Score(db.Model):
 def initScores():
     with app.app_context():
         """Create database and tables"""
-        #db.init_app(app)
+        db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = Score(name='Grace', uid='10')
-        u2 = Score(name='Claire', uid='10')
-        u3 = Score(name='Claire', uid='10')
-        u4 = Score(name='Annika', uid='10')
-        u5 = Score(name='Mortensen', uid='10')
+        u1 = Score(name='Grace', score='10')
+        u2 = Score(name='Claire', score='10')
+        u3 = Score(name='Claire', score='10')
+        u4 = Score(name='Annika', score='10')
+        u5 = Score(name='Mortensen', score='10')
 
         users = [u1, u2, u3, u4, u5]
 
@@ -111,5 +111,5 @@ def initScores():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate email, or error: {user.uid}")
+                print(f"Records exist, duplicate email, or error: {user.score}")
             
