@@ -136,12 +136,10 @@ def initPeriods():
         #db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = Period(periodlength='5', cyclelength='30', nextperiod='2/23/23', nextovulation='February 10')
-        u2 = Period(periodlength='4', cyclelength='25', nextperiod='2/28/23', nextovulation='February 15')
-        u3 = Period(periodlength='7', cyclelength='40', nextperiod='2023-02-21', nextovulation='February 9')
-        u4 = Period(periodlength='4', cyclelength='21', nextperiod='2023-02-19', nextovulation='February 6')
+        u1 = Period(periodlength='5', cyclelength='30', nextperiod='2023-01-08', nextovulation='January 25')
+        u2 = Period(periodlength='4', cyclelength='31', nextperiod='2023-02-05', nextovulation='March 1')
 
-        users = [u1, u2, u3, u4]
+        users = [u1, u2]
 
         """Builds sample user/note(s) data"""
         for user in users:
