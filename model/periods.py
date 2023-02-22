@@ -23,17 +23,15 @@ class Period(db.Model):
     _periodlength = db.Column(db.String(255), unique=False, nullable=False)
     _cyclelength = db.Column(db.String(255), unique=True, nullable=False)
     _nextperiod = db.Column(db.String(255), unique=True, nullable=False)
-    _nextovulation = db.Column(db.String(255), unique=True, nullable=False)
 
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # posts = db.relationship("Post", cascade='all, delete', backref='scores', lazy=True)
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, periodlength, cyclelength, nextperiod, nextovulation):
+    def __init__(self, periodlength, cyclelength, nextperiod):
         self._periodlength = periodlength    # variables with self prefix become part of the object, 
         self._cyclelength = cyclelength
         self._nextperiod = nextperiod
-        self._nextovulation = nextovulation
 
     # a name getter method, extracts name from object
     @property
@@ -66,15 +64,6 @@ class Period(db.Model):
         self._nextperiod = nextperiod
     
     @property
-    def nextovulation(self):
-        return self._nextovulation
-    
-    # a setter function, allows name to be updated after initial object creation
-    @nextovulation.setter
-    def nextovulation(self, nextovulation):
-        self._nextovulation = nextovulation
-    
-    @property
     # output content using str(object) in human readable form, uses getter
     # output content using json dumps, this is ready for API response
     def __str__(self):
@@ -99,13 +88,12 @@ class Period(db.Model):
             "id": self.id,
             "periodlength": self.periodlength,
             "cyclelength": self.cyclelength,
-            "nextperiod": self.nextperiod,
-            "nextovulation": self.nextovulation
+            "nextperiod": self.nextperiod
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, periodlength="", cyclelength="", nextperiod="", nextovulation=""):
+    def update(self, periodlength="", cyclelength="", nextperiod=""):
         """only updates values with length"""
         if len(periodlength) > 0:
             self.periodlength = periodlength
@@ -113,8 +101,6 @@ class Period(db.Model):
             self.cyclelength = cyclelength
         if len(nextperiod) > 0:
             self.nextperiod = nextperiod
-        if len(nextovulation) > 0:
-            self.nextovulation = nextovulation
         db.session.commit()
         return self
 
@@ -136,8 +122,8 @@ def initPeriods():
         #db.init_app(app)
         db.create_all()
         """Tester data for table"""
-        u1 = Period(periodlength='5', cyclelength='30', nextperiod='2023-01-08', nextovulation='January 25')
-        u2 = Period(periodlength='4', cyclelength='31', nextperiod='2023-02-05', nextovulation='March 1')
+        u1 = Period(periodlength='5', cyclelength='30', nextperiod='2023-01-08')
+        u2 = Period(periodlength='4', cyclelength='31', nextperiod='2023-02-05')
 
         users = [u1, u2]
 

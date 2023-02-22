@@ -21,12 +21,10 @@ class PeriodAPI:
             periodlength = body.get('periodlength')
             cyclelength = body.get('cyclelength')
             nextperiod = body.get('nextperiod')
-            nextovulation = body.get('nextovulation')
             ''' #1: Key code block, setup USER OBJECT '''
             uo = Period(periodlength=periodlength,
                       cyclelength=cyclelength,
-                      nextperiod=nextperiod,
-                      nextovulation=nextovulation)
+                      nextperiod=nextperiod)
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
@@ -42,52 +40,8 @@ class PeriodAPI:
             periods = Period.query.all()    # read/extract all users from database
             json_ready = [period.read() for period in periods]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-                
-    class _Readov(Resource):
-        def get(self):
-            periods = Period.query.all() 
-            json_ready = [period.read() for period in periods] 
-            data = []
-            data.append(json_ready)
-            # for i in data: 
-            ovulation=[]
-            for d in data:
-                for dict in d:
-                    ovulation.append( dict.get("nextovulation") )
-            return ovulation
-    
-    class _Readovmonth(Resource):
-        def get(self):
-            periods = Period.query.all()    # read/extract all users from database
-            json_ready = [period.read() for period in periods]  # prepare output in json
-            data = []
-            data.append(json_ready)
-            print(data)
-            # for i in data: 
-            ovulationmonth=[]
-            for d in data:
-                for dict in d: 
-                    ovulationmonth.append( dict.get("nextovulation").split()[0] )
-            return ovulationmonth
-
-    class _Readovday(Resource):
-        def get(self):
-            periods = Period.query.all()    # read/extract all users from database
-            json_ready = [period.read() for period in periods]  # prepare output in json
-            data = []
-            data.append(json_ready)
-            # for i in data: 
-            ovulationday=[]
-            for d in data:
-                for dict in d:
-                    ovulationday.append( dict.get("nextovulation").split()[1])
-            return ovulationday
-                    
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
-    api.add_resource(_Readov, '/ov')
-    api.add_resource(_Readovmonth, '/mo')
-    api.add_resource(_Readovday, '/day')
     
