@@ -18,7 +18,6 @@ class PeriodAPI:
             body = request.get_json()
             
             ''' Avoid garbage in, error checking '''
-            lastperiod = body.get('lastperiod')
             periodlength = body.get('periodlength')
             cyclelength = body.get('cyclelength')
             nextperiod = body.get('nextperiod')
