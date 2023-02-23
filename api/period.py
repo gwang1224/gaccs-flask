@@ -40,10 +40,6 @@ class PeriodAPI:
             periods = Period.query.all()    # read/extract all users from database
             json_ready = [period.read() for period in periods]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-<<<<<<< HEAD
-=======
-                
->>>>>>> 7b5ad09 (add ovulation)
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
