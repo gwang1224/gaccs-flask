@@ -25,7 +25,7 @@ class ScoreAPI:
             # validate score
             score = body.get('score')
             if score is None or len(score) < 1:
-                return {'message': f'User ID is missing, or is less than 2 characters'}, 400
+                return {'message': f'Score is missing'}, 400
 
             ''' #1: Key code block, setup USER OBJECT '''
             so = Score(name=name, 
