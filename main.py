@@ -11,6 +11,7 @@ from model.scores import initScores
 from model.symptoms import initSymptoms
 from model.periods import initPeriods
 from model.comments import initComments
+from model.ovulations import initOvulations
 
 
 # setup APIs
@@ -21,6 +22,7 @@ from api.score import score_api
 from api.symptom import symptom_api
 from api.period import period_api
 from api.comment import comment1_api
+from api.ovulation import ovulation_api
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -34,6 +36,7 @@ app.register_blueprint(score_api)
 app.register_blueprint(symptom_api)
 app.register_blueprint(period_api)
 app.register_blueprint(comment1_api)
+app.register_blueprint(ovulation_api)
 
 def db_connection():
     conn = None
@@ -74,8 +77,9 @@ def activate_job():
     initUsers()
     initPeriods()
     initComments()
-    initScores()
+    #initScores()
     initSymptoms()
+    initOvulations()
 
 # this runs the application on the development server
 if __name__ == "__main__":

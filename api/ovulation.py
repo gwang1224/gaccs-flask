@@ -3,28 +3,24 @@ from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
 
-from model.periods import Period
+from model.ovulations import Ovulation
 
-period_api = Blueprint('period_api', __name__,
-                   url_prefix='/api/periods')
+ovulation_api = Blueprint('ovulation_api', __name__,
+                   url_prefix='/api/ovulation')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
-api = Api(period_api)
+api = Api(ovulation_api)
 
-class PeriodAPI:        
+class OvulationAPI:        
     class _Create(Resource):
         def post(self):
             ''' Read data for json body '''
             body = request.get_json()
             
             ''' Avoid garbage in, error checking '''
-            periodlength = body.get('periodlength')
-            cyclelength = body.get('cyclelength')
-            nextperiod = body.get('nextperiod')
+            nextovulation = body.get('nextovulation')
             ''' #1: Key code block, setup USER OBJECT '''
-            uo = Period(periodlength=periodlength,
-                      cyclelength=cyclelength,
-                      nextperiod=nextperiod)
+            uo = Ovulation(nextovulation=nextovulation)
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
@@ -37,13 +33,10 @@ class PeriodAPI:
 
     class _Read(Resource):
         def get(self):
-            periods = Period.query.all()    # read/extract all users from database
-            json_ready = [period.read() for period in periods]  # prepare output in json
+            ovulations = Ovulation.query.all()    # read/extract all users from database
+            json_ready = [ovulation.read() for ovulation in ovulations]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
-<<<<<<< HEAD
-=======
                 
->>>>>>> 7b5ad09 (add ovulation)
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
