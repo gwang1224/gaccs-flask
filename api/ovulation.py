@@ -18,9 +18,13 @@ class OvulationAPI:
             body = request.get_json()
             
             ''' Avoid garbage in, error checking '''
-            nextovulation = body.get('nextovulation')
+            perioddate = body.get('perioddate')
+            periodcycle = body.get('periodcycle')
+            menscycle = body.get('menscycle')
             ''' #1: Key code block, setup USER OBJECT '''
-            uo = Ovulation(nextovulation=nextovulation)
+            uo = Ovulation(perioddate=perioddate,
+                        periodcycle=periodcycle,
+                        menscycle=menscycle)
             
             ''' #2: Key Code block to add user to database '''
             # create user in database
