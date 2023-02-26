@@ -138,5 +138,6 @@ def initPeriods():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate period, or error: {user.cyclelength}")
+                
+                print(f"Records exist, duplicate period, or error: {user.nextperiod}")
             
