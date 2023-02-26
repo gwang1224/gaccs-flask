@@ -2,10 +2,9 @@ import json
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 
-# from model.symptoms import Symptom
+# from model.users import User
 from model.symptoms import Symptom
 
-#database
 symptom_api = Blueprint('symptom_api', __name__,
                    url_prefix='/api/symptom')
 
@@ -19,36 +18,38 @@ class SymptomAPI:
             body = request.get_json()
             
             ''' Avoid garbage in, error checking '''
-            # comment has to be longer than 5 characters
+            # validate name
             comment = body.get('comment')
-            if comment is None or len(comment) < 5:
-                return {'message': f'Comment is missing, or is less than 5 characters'}, 400
-            # comment has to be longer than 5 characters
+            if comment is None or len(comment) < 2:
+                return {'message': f'Comment is missing, or is less than 2 characters'}, 400
+            # validate symptom
             symptom = body.get('symptom')
             if symptom is None or len(symptom) < 2:
-                return {'message': f'Symptom is missing, or is less than 5 characters'}, 400
+                return {'message': f'Symptom is missing, or is less than 2 characters'}, 400
 
-            ''' #1: setup SYMPTOM OBJECT '''
-            so = Symptom(comment=comment, 
+            ''' #1: Key code block, setup USER OBJECT '''
+            uo = Symptom(comment=comment, 
                       symptom=symptom)
             
             
-            ''' #2: Key Code block to add symptom to database '''
+            ''' #2: Key Code block to add user to database '''
             # create user in database
-            symptom = so.create()
+            user = uo.create()
             # success returns json of user
             if user:
                 return jsonify(user.read())
             # failure returns error
-            return {'message': f'Processed {comment}, has a format error or {symptom} has a format error.'}, 400
+            return {'message': f'Processed {comment}, either a format error or {symptom} is duplicate'}, 400
 
     class _Read(Resource):
         def get(self):
             users = Symptom.query.all()    # read/extract all users from database
-            json_ready = [symptom.read() for symptom in symptoms]  # prepare output in json
+            json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+    
+
+            
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
-    

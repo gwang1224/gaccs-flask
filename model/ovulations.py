@@ -147,5 +147,5 @@ def initOvulations():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate ovulation, or error: {user.ovulation}")
+                print(f"Records exist, duplicate ovulation, or error: {user.perioddate}")
             
