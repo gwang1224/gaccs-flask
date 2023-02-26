@@ -50,9 +50,9 @@ class SymptomAPI:
         def delete(self):
             body = request.get_json()
             sid = body.get('sid')
-            objsym = Symptom.query.get(sid)
-            objsym.delete()
-            return f"{score.read()} Has been deleted"
+            sym = Symptom.query.get(sid)
+            sym.delete()
+            #return f"{score.read()} Has been deleted"
             
 
     # building RESTapi endpoint
