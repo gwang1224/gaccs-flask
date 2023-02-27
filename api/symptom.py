@@ -54,7 +54,6 @@ class SymptomAPI:
             sym = Symptom.query.get(sid)
             sym.delete()
             #return f"{score.read()} Has been deleted"
-            
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
