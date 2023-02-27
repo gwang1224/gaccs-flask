@@ -11,12 +11,12 @@ from sqlalchemy.exc import IntegrityError
 class Score(db.Model):
     __tablename__ = 'scores1' 
 
-    # Define the User schema with "vars" from object
+    # Define the Scores schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
     _name = db.Column(db.String(255), unique=True, nullable=False)
     _score = db.Column(db.String(255), unique=False, nullable=False)
 
-    # constructor of a User object, initializes the instance variables within object (self)
+    # constructor of a Scores object, initializes the instance variables within object (self)
     def __init__(self, name, score):
         self._name = name    # variables with self prefix become part of the object, 
         self._score = score
