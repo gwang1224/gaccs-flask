@@ -50,12 +50,9 @@ class ScoreAPI:
     
     class _Delete(Resource):
         def delete(self):
-            try:
-                db.session.query(Score).delete()
-                db.session.commit()
-                return {'message': 'All scores have been deleted.'}
-            except Exception as e:
-                return {'message': str(e)}, 500
+            db.session.query(Score).delete()
+            db.session.commit()
+            return {'message': 'All scores have been deleted.'}
             
 
     # building RESTapi endpoint
