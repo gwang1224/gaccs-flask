@@ -47,19 +47,13 @@ class SymptomAPI:
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
     
-    # class _Delete(Resource):
-    #     def delete(self):
-    #         body = request.get_json()
-    #         sid = body.get('sid')
-    #         sym = Symptom.query.get(sid)
-    #         sym.delete()
-    #         return "sid Has been deleted"
     class _Delete(Resource):
         def delete(self):
-            db.session.query(Symptom).delete()
-            db.session.commit()
-            return {'message': 'comment has been deleted.'}
-            
+            body = request.get_json()
+            sid = body.get('sid')
+            sym = Symptom.query.get(sid)
+            sym.delete()
+            return "sid Has been deleted"
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
