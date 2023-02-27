@@ -34,7 +34,7 @@ class OvulationAPI:
             if user:
                 return jsonify(user.read())
             # failure returns error
-            return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
+            return {'message': f'Processed {perioddate}, either a format error or User ID {periodcycle} is duplicate'}, 400
 
     class _Read(Resource):
         def get(self):
