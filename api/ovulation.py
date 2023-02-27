@@ -4,6 +4,7 @@ from flask_restful import Api, Resource # used for REST API building
 from datetime import datetime
 
 from model.ovulations import Ovulation
+from __init__ import db
 
 ovulation_api = Blueprint('ovulation_api', __name__,
                    url_prefix='/api/ovulation')
@@ -34,16 +35,23 @@ class OvulationAPI:
             if user:
                 return jsonify(user.read())
             # failure returns error
-            return {'message': f'Processed {perioddate}, either a format error or User ID {periodcycle} is duplicate'}, 400
+            #return {'message': f'Processed {perioddate}, either a format error or User ID {periodcycle} is duplicate'}, 400
 
     class _Read(Resource):
         def get(self):
             ovulations = Ovulation.query.all()    # read/extract all users from database
             json_ready = [ovulation.read() for ovulation in ovulations]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
+    
+    class _Delete(Resource):
+        def delete(self):
+            db.session.query(Ovulation).delete()
+            db.session.commit()
+            return {'message': 'All scores have been deleted.'}
                 
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
     api.add_resource(_Read, '/')
+    api.add_resource(_Delete, '/delete')
     

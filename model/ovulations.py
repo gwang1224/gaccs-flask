@@ -19,9 +19,9 @@ class Ovulation(db.Model):
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
-    _perioddate = db.Column(db.String(255), unique=True, nullable=False)
-    _periodcycle = db.Column(db.String(255), unique=True, nullable=False)
-    _menscycle = db.Column(db.String(255), unique=True, nullable=False)
+    _perioddate = db.Column(db.String(255), unique=False, nullable=False)
+    _periodcycle = db.Column(db.String(255), unique=False, nullable=False)
+    _menscycle = db.Column(db.String(255), unique=False, nullable=False)
 
 
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
