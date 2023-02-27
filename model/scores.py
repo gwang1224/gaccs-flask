@@ -13,7 +13,7 @@ class Score(db.Model):
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
-    _name = db.Column(db.String(255), unique=False, nullable=False)
+    _name = db.Column(db.String(255), unique=True, nullable=False)
     _score = db.Column(db.String(255), unique=False, nullable=False)
 
     # constructor of a User object, initializes the instance variables within object (self)

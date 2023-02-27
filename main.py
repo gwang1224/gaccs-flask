@@ -79,7 +79,7 @@ def activate_job():
     initComments()
     #initScores()
     initSymptoms()
-    initOvulations()
+    # initOvulations()
 
 # this runs the application on the development server
 if __name__ == "__main__":
