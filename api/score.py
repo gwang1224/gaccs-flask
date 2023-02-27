@@ -2,7 +2,6 @@ import json
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 
-# from model.users import User
 from model.scores import Score
 from __init__ import db
 
@@ -19,11 +18,11 @@ class ScoreAPI:
             body = request.get_json()
             
             ''' Avoid garbage in, error checking '''
-            # validate name
+            # validate name, name must be greater than 2 letters
             name = body.get('name')
             if name is None or len(name) < 2:
                 return {'message': f'Name is missing, or is less than 2 characters'}, 400
-            # validate score
+            # validate score, score must be greater than 1
             score = body.get('score')
             if score is None or len(score) < 1:
                 return {'message': f'Score is missing'}, 400
