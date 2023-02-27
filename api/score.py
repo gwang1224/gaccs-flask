@@ -4,6 +4,7 @@ from flask_restful import Api, Resource # used for REST API building
 
 # from model.users import User
 from model.scores import Score
+from __init__ import db
 
 score_api = Blueprint('score_api', __name__,
                    url_prefix='/api/scores')
@@ -49,11 +50,12 @@ class ScoreAPI:
     
     class _Delete(Resource):
         def delete(self):
-            body = request.get_json()
-            score = body.get('score')
-            score = Score.query.get(body)
-            score.delete()
-            return f"{score.read()} Has been deleted"
+            try:
+                db.session.query(Score).delete()
+                db.session.commit()
+                return {'message': 'All scores have been deleted.'}
+            except Exception as e:
+                return {'message': str(e)}, 500
             
 
     # building RESTapi endpoint
