@@ -49,13 +49,12 @@ class SymptomAPI:
     
     class _Delete(Resource):
         def delete(self):
-            body = request.get_json()
-            sid = body.get('sid')
-            sym = Symptom.query.get(sid)
-            sym.delete()
-            return "sid Has been deleted"
+            db.session.query(Symptom).delete()
+            db.session.commit()
+            return {'message': 'All scores have been deleted.'}
+            
 
     # building RESTapi endpoint
     api.add_resource(_Create, '/create')
-    api.add_resource(_Delete, '/delete')
     api.add_resource(_Read, '/')
+    api.add_resource(_Delete, '/delete')
