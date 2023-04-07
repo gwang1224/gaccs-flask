@@ -1,7 +1,6 @@
 import json
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
-
 # from model.users import User
 from model.symptoms import Symptom
 
@@ -48,7 +47,7 @@ class SymptomAPI:
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
     
     class _Delete(Resource):
-        def post(self):
+        def delete(self):
             body = request.get_json()
             sid = body.get('sid')
             sym = Symptom.query.get(sid)
