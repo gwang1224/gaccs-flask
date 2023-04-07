@@ -20,9 +20,9 @@ class Period(db.Model):
 
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
-    _periodlength = db.Column(db.String(255), unique=False, nullable=False)
-    _cyclelength = db.Column(db.String(255), unique=True, nullable=False)
-    _nextperiod = db.Column(db.String(255), unique=True, nullable=False)
+    _periodlength = db.Column(db.String(255), unique=True, nullable=False)
+    _cyclelength = db.Column(db.String(255), unique=False, nullable=False)
+    _nextperiod = db.Column(db.String(255), unique=False, nullable=False)
 
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # posts = db.relationship("Post", cascade='all, delete', backref='scores', lazy=True)
@@ -119,7 +119,7 @@ class Period(db.Model):
 def initPeriods():
     with app.app_context():
         """Create database and tables"""
-        #db.init_app(app)
+        # db.init_app(app)
         db.create_all()
         """Tester data for table"""
         u1 = Period(periodlength='5', cyclelength='30', nextperiod='2023-01-08')
@@ -138,6 +138,5 @@ def initPeriods():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                
                 print(f"Records exist, duplicate period, or error: {user.nextperiod}")
             

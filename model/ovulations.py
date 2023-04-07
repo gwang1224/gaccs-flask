@@ -113,7 +113,7 @@ class Ovulation(db.Model):
 def initOvulations():
     with app.app_context():
         """Create database and tables"""
-        #db.init_app(app)
+#        db.init_app(app)
         db.create_all()
         """Tester data for table"""
         u1 = Ovulation(perioddate='2023-01-15', periodcycle='5', menscycle='30')
