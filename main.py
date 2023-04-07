@@ -73,12 +73,13 @@ def stub():
 
 @app.before_first_request
 def activate_job():
+    db.init_app()
     initJokes()
     initUsers()
     initPeriods()
     initComments()
     #initScores()
-    initSymptoms()
+    #initSymptoms()
     initOvulations()
 
 # this runs the application on the development server
