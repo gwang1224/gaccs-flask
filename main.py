@@ -4,7 +4,7 @@ import threading
 from flask import render_template, Flask, jsonify, request  # import render_template from "public" flask libraries
 import sqlite3
 # import "packages" from "this" project
-from __init__ import app  # Definitions initialization
+from __init__ import app, db # Definitions initialization
 from model.jokes import initJokes
 from model.users import initUsers
 from model.scores import initScores
@@ -73,13 +73,13 @@ def stub():
 
 @app.before_first_request
 def activate_job():
-    db.init_app()
+    db.init_app(app)
     initJokes()
     initUsers()
     initPeriods()
     initComments()
-    #initScores()
-    #initSymptoms()
+    initScores()
+    initSymptoms()
     initOvulations()
 
 # this runs the application on the development server
