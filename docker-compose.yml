@@ -4,7 +4,7 @@ services:
                 image: flow_v1
                 build: .
                 ports:
-                        - "8087:8087"
+                        - "8099:8087"
                 volumes:
                         - ./volumes:/volumes
                         - ./instance:/instance
